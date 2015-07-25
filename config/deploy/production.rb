@@ -30,6 +30,18 @@ server '139.162.24.40', user: 'deploy', roles: %w{app db web}, my_property: :my_
 # For available Capistrano configuration variables see the documentation page.
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
+config.action_mailer.raise_delivery_errors = true
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.default_url_options = { host: "http://localhost:3000" }
+config.action_mailer.smtp_settings = {
+    :address => "smtp.gmail.com",
+    :port => "587",
+    :domain => "gmail.com",
+    :authentication => "plain",
+    :user_name => ENV["hexter.ch@gmail.com"],
+    :password => ENV[""],
+    :enable_starttls_auto => true
+ }
 
 
 
