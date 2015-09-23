@@ -8,10 +8,10 @@ RSpec.describe Proposal, :type => :model do
     create(:proposal)
     # users
     create(:user)
-    # rewards
+    # products
     arr = [ 100, 500, 1000 ]
     arr.each do |f|
-      create(:reward, price: f.to_i)
+      create(:product, price: f.to_i)
     end
     # categories
     categories = [ "比賽", "出國", "訓練" ]
@@ -23,7 +23,7 @@ RSpec.describe Proposal, :type => :model do
   let(:proposal) { Proposal.first }
   let(:category) { Category.first }
   let(:user) { User.first }
-  let(:reward) { Reward.first }
+  let(:product) { Product.first }
 
   context ".create" do
     it "the basic proposal with category_id and user_id" do
@@ -53,28 +53,23 @@ RSpec.describe Proposal, :type => :model do
   end
 
   # Test for Factory_girl gem
-  context "::give_reward" do
-    it "give reward to the proposal" do
-      user_create_reward = user.give_reward(reward, proposal)
-      # expect(user_create_reward).to eq( UserRewardProposal.where( :reward_id => 1, :proposal_id => 1 ))
-    end
+  context "::give_product" do
+    # give user product
   end
 
   # Test for toggle_like_proposal
   context "::toggle_like_proposal" do
     it "user add favorite proposal" do
       user.toggle_like_proposal(proposal)
-      expect( Userproposalship.where( :user_id => user.id, :proposal_id => proposal.id ) ).to exist
+      result = Userproposalship.first.user.id
+      expect(result).to match(user.id)
     end
     it "if favorite exist should remove it" do
       user.toggle_like_proposal(proposal)
+      result1 = Userproposalship.count
       user.toggle_like_proposal(proposal)
-      expect( Userproposalship.where( :user_id => user.id, :proposal_id => proposal.id ) ).not_to exist
-    end
-    it "search for the user favortie" do
-      user.toggle_like_proposal(proposal)
-      result = Userproposalship.where( :user_id => user.id )
-      # expect(result).to eq(Userproposalship.find_by(:user_id => user.id))
+      result2 = Userproposalship.count
+      expect(result2-1).to match(result1)
     end
   end
 

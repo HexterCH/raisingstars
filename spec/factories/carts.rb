@@ -1,4 +1,4 @@
 FactoryGirl.define do
-  factory :reward do
+  factory :cart do
   end
 end
